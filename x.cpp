@@ -1,10 +1,14 @@
 #include<iostream>
 #include<cstdlib>
 #include<cstdio>
+#include<vector>
+#include<sstream>
+#include<fstream>
+
+using namespace std;
 struct node
 {
-    int*elem;
-    int size;
+    std::vector<int>  elem;
     node*prev;
     node*next;
 };
@@ -38,10 +42,9 @@ class dll
         numstack=(int*)malloc(sizeof(int)*size);
         num_stack_refresh();
     }
-    void append(int*k,int size){
+    void append(vector<int> k){
         node* el;
         el=(node*)malloc(sizeof(node));
-        el->size=size;
         el->elem=k;
         if (head==NULL)
         {
@@ -110,8 +113,8 @@ class dll
         int k;
         printf("FIne");
         while(t){
-            if(t->size==1){
-                k=(t->elem)[0];
+            if((t->elem).size()==1){
+                k=(t->elem).at(0);
                 if(numstack[mod(k)-1]==-1*(k)/mod(k)){
                 flag=0;
                 num_stack_refresh(); 
@@ -133,9 +136,10 @@ class dll
             return 1;
         }
         num_stack_refresh();
-        int * el,s;
+        int s;
+        vector<int> el;
         el=f->elem;
-        s=f->size;
+        s=(f->elem).size();
         t=f->next;
         t=f->prev;
         if(f&&flag){
@@ -143,17 +147,18 @@ class dll
             int l=0;
             for(int i=0;i<s;i++)
             {
-                append(el+i,1);
+                vector<int> j{el[i]} ;
+                append(j);
                 l=solve();
                 if(l)
                     return 1;
                 else
                     pop();
             }
-            /*if(!l){
-                add_node(t,NULL);
+            if(!l){
+                //add_node(t,NULL);
                 return l;
-            }*/
+            }
         }     
 
     }
@@ -163,7 +168,7 @@ class dll
         node* t=head;
         int j=0;
         while(t){
-            int s=t->size;
+            int s=(t->elem).size();
             printf("%d %d [",j+1,s);
             for(int i=0;i<s;i++)
                 printf(" %d",(t->elem)[i]);
@@ -176,8 +181,24 @@ class dll
     }
 
 };
+vector<int> create(std::string line)
+{
+    int d;
+    vector<int> k;
+    std::istringstream iss(line);
+    iss>>d;
+    while(d!=0)
+    {
+        k.push_back(d);
+        iss>>d;
+    }
+    return k;
 
-using namespace std;
+}
+    
+
+
+
 int main(int argc,char**argv){
     /*ifstream f:
     string line;
@@ -186,27 +207,38 @@ int main(int argc,char**argv){
         getline(f,line);
         line
     }*/
-    dll y(720);
-    int **x;
+    /*std::ifstream f;
     
-    x=(int**)malloc(11*sizeof(int**));
-    for(int j=0;j<11;j++){    
-        x[j]=(int*)malloc(11*sizeof(int*));
-        for (int i=0;i<11;i++)
+    f.open(argv[1]);
+    
+    std::string line;
+    std::getline(f,line);
+    
+    std::istringstream iss(line);
+    
+    char c;
+    std::string s;
+    int ln;
+    int p;
+    vector<int> arr;
+    
+    iss>> c >> s >> p >> ln;
+    
+    dll y(p);
+    for(int i=0;i<ln;i++)
+    {
+        std::getline(f,line);
+        if(line.length()==0)
         {
-            x[j][i]=i*11+j+1;
+            i--;
+            continue;
         }
-        if (j==4){
-            x[j][2]=12;
-        }
-        y.append(x[j],11);
-        
-    }
-    x[10][0]=-10;
-    y.print();
-    printf("Hurray!!!\n");
-    node k= *tty;
-
+        arr=create(line);
+        y.append(arr);
+    }*/
+    dll x(5);
+    vector<int> t{1,2,3,4,5};
+    x.append(t);
    /* y.add_node(&k,tty->next->next);
     y.print();
     printf("Hurray!!!\n");
@@ -216,9 +248,9 @@ int main(int argc,char**argv){
     y.append(x[10],11);
     y.print();
     y.solve();*/
-    y.solve();
+    x.solve();
 
-    y.print();
+    x.print();
 
     return 0;
 }
